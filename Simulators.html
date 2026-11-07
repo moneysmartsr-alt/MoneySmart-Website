@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulator Center | MoneySmart</title>
+<meta name="description" content="Ontdek de interactieve financiële simulators van MoneySmart.">
+<style>
+:root {
+  --bg:#071426;
+  --surface:#10223a;
+  --surface2:#162c45;
+  --green:#20d68a;
+  --white:#ffffff;
+  --muted:#a9b8ca;
+  --border:#263d56;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:Arial,sans-serif;
+  line-height:1.6;
+}
+a{text-decoration:none}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:22px 8%;
+  border-bottom:1px solid var(--border);
+  background:#071426;
+}
+.logo{font-size:25px;font-weight:800;color:white}
+.logo span{color:var(--green)}
+nav{display:flex;gap:24px;flex-wrap:wrap}
+nav a{color:#d5deea;font-size:14px}
+nav a:hover{color:var(--green)}
+.hero{
+  padding:90px 9%;
+  background:radial-gradient(ellipse at 85% 25%,rgba(32,214,138,.14),transparent 40%),var(--bg);
+}
+.eyebrow{
+  color:var(--green);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:3px;
+}
+h1{
+  font-size:clamp(40px,7vw,68px);
+  line-height:1.1;
+  margin:22px 0;
+}
+h1 span{color:var(--green)}
+.hero p,.intro{
+  color:var(--muted);
+  max-width:650px;
+  font-size:16px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:15px;
+  margin-top:40px;
+  max-width:750px;
+}
+.stat{
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:18px;
+  border-radius:10px;
+}
+.stat strong{
+  display:block;
+  color:var(--green);
+  font-size:23px;
+}
+.stat span{font-size:13px;color:var(--muted)}
+section{padding:75px 9%}
+.section-title{
+  font-size:clamp(29px,4vw,42px);
+  margin:12px 0;
+}
+.simulators{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:22px;
+  margin-top:35px;
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  transition:.2s;
+}
+.card:hover{
+  transform:translateY(-5px);
+  border-color:var(--green);
+}
+.card-top{
+  background:var(--surface2);
+  padding:28px;
+  min-height:145px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.card-icon{font-size:48px}
+.card-number{color:var(--green);font-size:13px;font-weight:bold}
+.card-body{padding:25px}
+.card-body h3{font-size:21px;margin-bottom:10px}
+.card-body p{color:var(--muted);font-size:14px;min-height:90px}
+.tag{
+  display:inline-block;
+  font-size:11px;
+  padding:6px 10px;
+  border-radius:20px;
+  color:var(--green);
+  background:rgba(32,214,138,.1);
+  margin:15px 0;
+}
+.status{
+  color:#e5c879;
+  font-size:12px;
+  display:block;
+  margin-bottom:15px;
+}
+.card-button{
+  display:block;
+  text-align:center;
+  padding:12px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  border-radius:7px;
+  font-size:13px;
+}
+.card-button:hover{
+  border-color:var(--green);
+  color:var(--green);
+}
+.dark-section{background:#0c1c31}
+.levels{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:18px;
+  margin-top:35px;
+}
+.level{
+  padding:22px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  border-radius:10px;
+}
+.level strong{color:var(--green);display:block;margin-bottom:8px}
+.level p{color:var(--muted);font-size:13px}
+.info-box{
+  margin-top:30px;
+  padding:25px;
+  border:1px solid #28513f;
+  background:rgba(32,214,138,.06);
+  border-radius:12px;
+}
+.info-box h3{margin-bottom:8px}
+.info-box p{color:var(--muted);font-size:14px}
+.cta{text-align:center}
+.cta p{
+  color:var(--muted);
+  max-width:580px;
+  margin:15px auto 25px;
+}
+.button{
+  display:inline-block;
+  padding:14px 24px;
+  background:var(--green);
+  color:#071426;
+  font-weight:bold;
+  border-radius:7px;
+}
+footer{
+  border-top:1px solid var(--border);
+  padding:30px 8%;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+footer .logo{margin-bottom:8px}
+@media(max-width:650px){
+  header{flex-direction:column;gap:15px}
+  nav{justify-content:center;gap:15px}
+  .hero{padding:70px 7%}
+  section{padding:60px 7%}
+  .card-body p{min-height:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">Money<span>Smart</span></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="#simulators">Simulators</a>
+    <a href="#levels">Niveaus</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+<div class="hero">
+  <div class="eyebrow">MONEYSMART INTERACTIVE EXPERIENCE</div>
+  <h1>Learn by making<br><span>real decisions.</span></h1>
+  <p>
+    Ervaar hoe financiële beslissingen werken.
+    Beheer je geld, bouw een onderneming en neem
+    belangrijke levensbeslissingen in realistische
+    simulaties. Je leert van je keuzes zonder echt
+    geld op het spel te zetten.
+  </p>
+
+  <div class="stats">
+    <div class="stat">
+      <strong>03</strong>
+      <span>Interactieve simulators</span>
+    </div>
+    <div class="stat">
+      <strong>01</strong>
+      <span>Leerzame ervaring</span>
+    </div>
+    <div class="stat">
+      <strong>∞</strong>
+      <span>Mogelijkheden om te leren</span>
+    </div>
+  </div>
+</div>
+
+<section id="simulators">
+  <div class="eyebrow">CHOOSE YOUR EXPERIENCE</div>
+  <h2 class="section-title">Explore the simulators.</h2>
+  <p class="intro">
+    Iedere simulator biedt een andere financiële uitdaging.
+    Kies jouw wereld en ontdek wat jouw beslissingen kunnen betekenen.
+  </p>
+
+  <div class="simulators">
+
+    <article class="card">
+      <div class="card-top">
+        <span class="card-number">SIMULATOR 01</span>
+        <span class="card-icon">💰</span>
+      </div>
+      <div class="card-body">
+        <span class="tag">PERSONAL FINANCE</span>
+        <h3>Personal Finance Simulator</h3>
+        <p>
+          Ontvang een fictief inkomen, beheer je maandelijkse
+          uitgaven, betaal rekeningen, bouw spaargeld op en
+          bereid je voor op onverwachte kosten.
+        </p>
+        <span class="status">● In ontwikkeling</span>
+        <span class="card-button">Binnenkort beschikbaar</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <span class="card-number">SIMULATOR 02</span>
+        <span class="card-icon">🏢</span>
+      </div>
+      <div class="card-body">
+        <span class="tag">ENTREPRENEURSHIP</span>
+        <h3>Business Simulator</h3>
+        <p>
+          Start een fictief bedrijf met SRD 10.000.
+          Maak zakelijke keuzes, beheer je kosten,
+          trek klanten aan en probeer winstgevend te worden.
+        </p>
+        <span class="status">● In ontwikkeling</span>
+        <span class="card-button">Binnenkort beschikbaar</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <span class="card-number">SIMULATOR 03</span>
+        <span class="card-icon">🌍</span>
+      </div>
+      <div class="card-body">
+        <span class="tag">LIFE & WEALTH</span>
+        <h3>Life Simulator</h3>
+        <p>
+          Bouw je fictieve leven op. Maak keuzes over
+          werk, wonen, sparen en ondernemen. Overwin
+          onverwachte obstakels en verhoog je nettovermogen.
+        </p>
+        <span class="status">● In ontwikkeling</span>
+        <span class="card-button">Binnenkort beschikbaar</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="dark-section" id="levels">
+  <div class="eyebrow">YOUR JOURNEY</div>
+  <h2 class="section-title">Start simple. Think bigger.</h2>
+  <p class="intro">
+    Je begint met eenvoudige financiële situaties.
+    Naarmate je verder komt, worden de scenario's
+    complexer en vragen ze om betere beslissingen.
+  </p>
+
+  <div class="levels">
+    <div class="level">
+      <strong>LEVEL 01 — BEGINNER</strong>
+      <p>Leer de basis. Begrijp inkomsten, uitgaven en eenvoudige keuzes.</p>
+    </div>
+    <div class="level">
+      <strong>LEVEL 02 — INTERMEDIATE</strong>
+      <p>Beheer meerdere financiële verantwoordelijkheden en uitdagingen.</p>
+    </div>
+    <div class="level">
+      <strong>LEVEL 03 — ADVANCED</strong>
+      <p>Maak complexe keuzes, beheer risico's en los financiële problemen op.</p>
+    </div>
+    <div class="level">
+      <strong>LEVEL 04 — EXPERT</strong>
+      <p>Test je strategisch inzicht in uitdagende realistische scenario's.</p>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>Jouw keuzes hebben gevolgen.</h3>
+    <p>
+      Een verkeerde beslissing kan geld kosten.
+      Een slimme beslissing kan nieuwe mogelijkheden creëren.
+      Ontdek de gevolgen, leer ervan en probeer opnieuw.
+    </p>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="eyebrow">LEARN • EARN • GROW</div>
+  <h2 class="section-title">Your financial journey starts here.</h2>
+  <p>
+    MoneySmart maakt financiële educatie interactief.
+    Niet alleen lezen over geld, maar zelf ervaren hoe
+    financiële keuzes werken.
+  </p>
+  <a href="index.html" class="button">Terug naar Home →</a>
+</section>
+</main>
+
+<footer>
+  <div class="logo">Money<span>Smart</span></div>
+  <p>Understand Your Money. Manage Your Future.</p>
+  <p>© 2026 MoneySmart. Alle rechten voorbehouden.</p>
+  <p>Alle simulaties gebruiken fictieve bedragen en situaties.</p>
+</footer>
+
+</body>
+</html>
