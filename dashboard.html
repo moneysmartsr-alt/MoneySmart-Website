@@ -4,102 +4,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mijn omgeving | MoneySmart</title>
+  <title>Mijn Dashboard | MoneySmart</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    * { box-sizing: border-box; }
+    :root {
+      --navy: #071426;
+      --surface: #10223a;
+      --green: #20d68a;
+      --white: #ffffff;
+      --muted: #a9b8ca;
+      --border: rgba(255,255,255,0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      background: #071426;
-      color: #fff;
+      background: var(--navy);
+      color: var(--white);
       font-family: Arial, sans-serif;
     }
 
     header {
-      background: #10223a;
-      border-bottom: 1px solid #203750;
-      padding: 18px 6%;
+      padding: 20px 7%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      border-bottom: 1px solid var(--border);
+      gap: 15px;
     }
 
     .logo {
-      color: #20d68a;
-      font-size: 25px;
+      font-size: 24px;
       font-weight: bold;
     }
 
-    button, a { font: inherit; }
+    .logo span {
+      color: var(--green);
+    }
 
-    .logout {
-      background: transparent;
-      color: #20d68a;
-      border: 1px solid #20d68a;
-      padding: 10px 16px;
+    button {
+      background: var(--green);
+      color: var(--navy);
+      border: none;
+      padding: 11px 18px;
       border-radius: 8px;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    .logout:hover {
-      background: #20d68a;
-      color: #071426;
-    }
-
-    .layout {
-      max-width: 1200px;
-      margin: auto;
-      padding: 30px 20px;
+    main {
+      width: 86%;
+      max-width: 1150px;
+      margin: 40px auto;
     }
 
     .welcome {
-      background: linear-gradient(120deg, #10223a, #173b4a);
-      border: 1px solid #24445a;
+      background: linear-gradient(120deg, #10223a, #163b4c);
+      padding: 35px;
       border-radius: 16px;
-      padding: 32px;
-      margin-bottom: 28px;
+      margin-bottom: 40px;
     }
 
-    .welcome h1 { margin: 0 0 12px; }
-
-    .muted { color: #a9b8ca; line-height: 1.6; }
-
-    .email {
-      color: #20d68a;
-      overflow-wrap: anywhere;
+    .welcome h1 {
+      margin-top: 0;
+      font-size: 30px;
     }
 
-    .section { margin: 38px 0; }
+    .green {
+      color: var(--green);
+    }
 
-    .section h2 { margin-bottom: 8px; }
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .section {
+      margin: 40px 0;
+    }
+
+    .section h2 {
+      margin-bottom: 10px;
+    }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
+      gap: 18px;
+      margin-top: 22px;
     }
 
     .card {
-      background: #10223a;
-      border: 1px solid #203750;
-      border-radius: 13px;
+      background: var(--surface);
+      border: 1px solid var(--border);
       padding: 22px;
+      border-radius: 13px;
     }
 
-    .card h3 { margin: 12px 0 8px; }
-
-    .emoji { font-size: 30px; }
+    .card h3 {
+      margin-top: 0;
+    }
 
     .tag {
       display: inline-block;
-      color: #20d68a;
-      background: #123c36;
-      border-radius: 20px;
+      color: var(--green);
+      background: rgba(32,214,138,0.1);
       padding: 6px 10px;
+      border-radius: 20px;
       font-size: 12px;
       margin-top: 10px;
     }
@@ -107,213 +123,162 @@
     .product-price {
       font-size: 19px;
       font-weight: bold;
-      margin: 16px 0 8px;
+      margin-top: 15px;
     }
 
     .empty {
-      background: #10223a;
-      border: 1px dashed #36516a;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    .account {
+      background: var(--surface);
+      padding: 24px;
       border-radius: 13px;
-      padding: 25px;
-      color: #a9b8ca;
-      text-align: center;
-      margin-top: 18px;
+      margin-top: 40px;
     }
-
-    .account-row {
-      border-bottom: 1px solid #263c53;
-      padding: 14px 0;
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .account-row:last-child { border: 0; }
 
     footer {
       text-align: center;
-      color: #a9b8ca;
-      padding: 30px 15px;
-      font-size: 13px;
+      padding: 30px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 50px;
     }
 
     #loading {
       text-align: center;
       padding: 100px 20px;
-      color: #20d68a;
+      color: var(--muted);
     }
 
-    #dashboard { display: none; }
-
     @media (max-width: 600px) {
-      header { padding: 15px 5%; }
-      .logo { font-size: 21px; }
-      .welcome { padding: 23px; }
-      .layout { padding: 22px 15px; }
+      header {
+        padding: 18px 5%;
+      }
+
+      main {
+        width: 90%;
+        margin-top: 25px;
+      }
+
+      .welcome {
+        padding: 24px;
+      }
+
+      .welcome h1 {
+        font-size: 25px;
+      }
     }
   </style>
 </head>
 
 <body>
+
   <div id="loading">MoneySmart wordt geladen...</div>
 
-  <div id="dashboard">
+  <div id="dashboard" style="display:none;">
+
     <header>
-      <div class="logo">MoneySmart</div>
-      <button class="logout" id="logoutButton">Uitloggen</button>
+      <div class="logo">Money<span>Smart</span></div>
+      <button id="logoutButton">Uitloggen</button>
     </header>
 
-    <main class="layout">
+    <main>
+
       <section class="welcome">
-        <span class="tag">MEMBER AREA</span>
-        <h1>Welkom bij MoneySmart!</h1>
+        <h1>Welkom bij <span class="green">MoneySmart</span></h1>
         <p class="muted">
-          Jouw persoonlijke omgeving om kennis op te bouwen,
-          financiële vaardigheden te ontwikkelen en slimmer
-          met geld om te gaan.
+          Goed dat je werkt aan jouw financiële ontwikkeling.
+          Ontdek onze hulpmiddelen en leer slimmer omgaan met geld.
         </p>
-        <p class="muted">
-          Ingelogd als: <strong class="email" id="memberEmail"></strong>
-        </p>
+        <p>Ingelogd als: <strong id="memberEmail"></strong></p>
       </section>
 
       <section class="section">
         <h2>Jouw leeromgeving</h2>
         <p class="muted">
-          Ontdek de onderwerpen waarmee je jouw financiële kennis kunt vergroten.
+          Ontdek verschillende onderwerpen en ontwikkel jouw financiële kennis.
         </p>
 
         <div class="grid">
           <article class="card">
-            <div class="emoji">💰</div>
             <h3>Personal Finance</h3>
-            <p class="muted">Budgetteren, sparen en omgaan met je geld.</p>
-            <span class="tag">Binnenkort beschikbaar</span>
+            <p class="muted">Leer budgetteren, sparen en bewust omgaan met jouw geld.</p>
           </article>
 
           <article class="card">
-            <div class="emoji">📊</div>
             <h3>Understanding Economics</h3>
-            <p class="muted">Inflatie, koopkracht en economie begrijpen.</p>
-            <span class="tag">Binnenkort beschikbaar</span>
+            <p class="muted">Begrijp inflatie, koopkracht en economische ontwikkelingen.</p>
           </article>
 
           <article class="card">
-            <div class="emoji">🏦</div>
             <h3>Banking & Loans</h3>
-            <p class="muted">Banken, leningen, rente en bankzaken.</p>
-            <span class="tag">Binnenkort beschikbaar</span>
+            <p class="muted">Ontdek hoe banken, leningen en rente werken.</p>
           </article>
 
           <article class="card">
-            <div class="emoji">💼</div>
             <h3>Entrepreneurship</h3>
-            <p class="muted">Ondernemen en verschillende inkomstenbronnen.</p>
-            <span class="tag">Binnenkort beschikbaar</span>
+            <p class="muted">Leer over ondernemerschap, inkomsten en bedrijfsgroei.</p>
           </article>
 
           <article class="card">
-            <div class="emoji">📈</div>
             <h3>Investing</h3>
-            <p class="muted">De basis van beleggen en investeren.</p>
-            <span class="tag">Binnenkort beschikbaar</span>
+            <p class="muted">Maak kennis met beleggen en verschillende investeringen.</p>
           </article>
 
           <article class="card">
-            <div class="emoji">🛡️</div>
             <h3>Financial Security</h3>
-            <p class="muted">Financiële risico's herkennen en jezelf beschermen.</p>
-            <span class="tag">Binnenkort beschikbaar</span>
+            <p class="muted">Leer financiële risico's herkennen en jezelf beschermen.</p>
           </article>
         </div>
       </section>
 
       <section class="section" id="producten">
-        <h2>Ontdek onze digitale producten</h2>
+        <h2>Onze digitale producten</h2>
         <p class="muted">
-          Bekijk de producten van MoneySmart. Je kunt afzonderlijke
-          producten aanschaffen en in jouw account terugvinden.
+          Bekijk onze planners en e-books en ontdek welk product jou kan helpen.
         </p>
 
-        <div class="grid">
-          <article class="card">
-            <div class="emoji">📒</div>
-            <h3>Personal Budget Planner</h3>
-            <p class="muted">
-              Breng je inkomsten, uitgaven, budget en spaardoelen overzichtelijk in kaart.
-            </p>
-            <div class="product-price">Prijs volgt</div>
-            <span class="tag">Productcatalogus</span>
-          </article>
-
-          <article class="card">
-            <div class="emoji">📘</div>
-            <h3>MoneySmart E-books</h3>
-            <p class="muted">
-              Praktische kennis over geldbeheer, sparen en financiële keuzes.
-            </p>
-            <div class="product-price">Prijs volgt</div>
-            <span class="tag">Productcatalogus</span>
-          </article>
-
-          <article class="card">
-            <div class="emoji">🗓️</div>
-            <h3>Financial Planners</h3>
-            <p class="muted">
-              Praktische hulpmiddelen om je financiële doelen en voortgang bij te houden.
-            </p>
-            <div class="product-price">Prijs volgt</div>
-            <span class="tag">Productcatalogus</span>
-          </article>
+        <div class="grid" id="productGrid">
+          <div class="empty">Producten worden geladen...</div>
         </div>
       </section>
 
-      <section class="section" id="aankopen">
+      <section class="section">
         <h2>Mijn aankopen</h2>
-        <p class="muted">
-          Hier komen straks de producten te staan waartoe jij toegang hebt.
-        </p>
-        <div class="empty">
-          <div class="emoji">🛍️</div>
-          <h3>Je aankopen verschijnen hier</h3>
-          <p>
-            Zodra een aankoop is bevestigd en toegang is toegekend,
-            vind je jouw product hier terug.
-          </p>
+        <p class="muted">Hier verschijnen jouw bevestigde aankopen.</p>
+
+        <div class="grid" id="purchaseGrid">
+          <div class="empty">Aankopen worden geladen...</div>
         </div>
       </section>
 
-      <section class="section" id="account">
+      <section class="account">
         <h2>Mijn account</h2>
-        <div class="card">
-          <div class="account-row">
-            <span class="muted">E-mailadres</span>
-            <strong class="email" id="accountEmail"></strong>
-          </div>
-          <div class="account-row">
-            <span class="muted">Accountstatus</span>
-            <strong>Geregistreerd</strong>
-          </div>
-          <div class="account-row">
-            <span class="muted">Lidmaatschap</span>
-            <strong>Gratis account</strong>
-          </div>
-        </div>
+        <p class="muted">E-mailadres: <strong id="accountEmail"></strong></p>
+        <p class="muted">Accounttype: Gratis account</p>
+        <p class="muted">Status: Geregistreerd</p>
       </section>
+
     </main>
 
-    <footer>MoneySmart — Learn. Earn. Grow.</footer>
-  </div>
+    <footer>
+      MoneySmart — Learn. Earn. Grow.
+    </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </div>
 
   <script>
     const SUPABASE_URL =
       "https://nohyhpxugfdwmywcukgu.supabase.co";
 
-    // Gebruik hier je bestaande sb_publishable_ key.
-    const SUPABASE_KEY = "sb_publishable_iVyC2aAwhw3h4kYUg8x74Q_vCFT28Z2";
+    const SUPABASE_KEY =
+      "sb_publishable_iVyC2aAwhw3h4kYUg8x74Q_vCFT28Z2";
 
     const supabaseClient = window.supabase.createClient(
       SUPABASE_URL,
@@ -324,49 +289,143 @@
     const dashboard = document.getElementById("dashboard");
 
     async function checkLogin() {
-      const { data, error } = await supabaseClient.auth.getSession();
+      const { data, error } =
+        await supabaseClient.auth.getSession();
 
       if (error || !data.session) {
-        window.location.replace("login.html");
-        return;
+        window.location.href = "login.html";
+        return false;
       }
 
-      const email = data.session.user.email || "";
+      const email = data.session.user.email;
 
       document.getElementById("memberEmail").textContent = email;
       document.getElementById("accountEmail").textContent = email;
 
       loading.style.display = "none";
       dashboard.style.display = "block";
+
+      return true;
+    }
+
+    async function loadProducts() {
+      const grid = document.getElementById("productGrid");
+
+      const { data, error } = await supabaseClient
+        .from("products")
+        .select("id, name, description, price, currency")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        grid.innerHTML =
+          '<div class="empty">Producten konden niet worden geladen. Probeer later opnieuw.</div>';
+
+        console.error("Productfout:", error);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        grid.innerHTML =
+          '<div class="empty">Er zijn momenteel nog geen producten beschikbaar.</div>';
+        return;
+      }
+
+      grid.innerHTML = "";
+
+      data.forEach(product => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const title = document.createElement("h3");
+        title.textContent = product.name;
+
+        const description = document.createElement("p");
+        description.className = "muted";
+        description.textContent = product.description || "";
+
+        const price = document.createElement("div");
+        price.className = "product-price";
+        price.textContent =
+          product.currency + " " +
+          Number(product.price).toLocaleString("nl-SR");
+
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "Beschikbaar";
+
+        card.append(title, description, price, tag);
+        grid.appendChild(card);
+      });
+    }
+
+    async function loadPurchases() {
+      const grid = document.getElementById("purchaseGrid");
+
+      const { data, error } = await supabaseClient
+        .from("purchases")
+        .select("id, payment_status, products(name, description)")
+        .eq("payment_status", "paid");
+
+      if (error) {
+        grid.innerHTML =
+          '<div class="empty">Jouw aankopen konden niet worden geladen.</div>';
+        console.error("Aankoopfout:", error);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        grid.innerHTML =
+          '<div class="empty">Je hebt momenteel nog geen bevestigde aankopen.</div>';
+        return;
+      }
+
+      grid.innerHTML = "";
+
+      data.forEach(purchase => {
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const title = document.createElement("h3");
+        title.textContent =
+          purchase.products?.name || "Aangekocht product";
+
+        const description = document.createElement("p");
+        description.className = "muted";
+        description.textContent =
+          purchase.products?.description || "";
+
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "Betaling bevestigd";
+
+        card.append(title, description, tag);
+        grid.appendChild(card);
+      });
     }
 
     document.getElementById("logoutButton")
-      .addEventListener("click", async function () {
-        const button = this;
-        button.disabled = true;
-        button.textContent = "Uitloggen...";
-
-        const { error } = await supabaseClient.auth.signOut();
-
-        if (error) {
-          alert("Uitloggen is niet gelukt. Probeer opnieuw.");
-          button.disabled = false;
-          button.textContent = "Uitloggen";
-          return;
-        }
-
-        window.location.replace("login.html");
+      .addEventListener("click", async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = "login.html";
       });
 
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
-        window.location.replace("login.html");
-      }
-    });
+    async function startDashboard() {
+      const loggedIn = await checkLogin();
 
-    checkLogin();
+      if (loggedIn) {
+        await Promise.all([
+          loadProducts(),
+          loadPurchases()
+        ]);
+      }
+    }
+
+    startDashboard();
   </script>
+
 </body>
 </html>
+
 
 
